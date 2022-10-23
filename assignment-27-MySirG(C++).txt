@@ -1,0 +1,797 @@
+NAME-UDIT KHANDELWAL					ASSIGNMENT-27 (Operator overloading and friend function)
+
+
+1. Define a class Complex with appropriate instance variables and member functions.
+Define following operators in the class:
+a. +
+b. -
+c. *
+d. ==
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+private:
+    int a,b;
+public:
+    Complex()
+    {
+        a=0;
+        b=0;
+    }
+
+    Complex(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void setData(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void showData()
+    {
+        cout<<"real part: "<<a<<" imaginary part: "<<b<<endl;
+    }
+
+    Complex operator +(Complex c)
+    {
+        Complex temp;
+        temp.a=a+c.a;
+        temp.b=b+c.b;
+        return temp;
+    }
+
+    Complex operator -(Complex c)
+    {
+        Complex temp;
+        temp.a=a-c.a;
+        temp.b=b-c.b;
+        return temp;
+    }
+
+    Complex operator *(Complex c)
+    {
+        Complex temp;
+        temp.a=(a*c.a)-(b*c.b);
+        temp.b=(a*c.b)+(b*c.a);
+        return temp;
+    }
+
+    bool operator ==(Complex c)
+    {
+        if((a==c.a)&&(b==c.b))
+            return true;
+        else
+            return false;
+    }
+};
+
+int main()
+{
+    Complex c1(2,4),c2(3,5),c3,c4,c5;
+    c3=c1+c2;
+    c3.showData();
+    c4=c2-c1;
+    c4.showData();
+    c5=c2*c1;
+    c5.showData();
+    if(c1==c2)
+        cout<<"both are equal"<<endl;
+    else
+        cout<<"both are unequal"<<endl;
+    return 0;
+}
+
+
+2. Write a C++ program to overload unary operators that is increment and decrement.
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+private:
+    int a,b;
+public:
+    Complex()
+    {
+        a=0;
+        b=0;
+    }
+
+    Complex(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void setData(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void showData()
+    {
+        cout<<"real part: "<<a<<" imaginary part: "<<b<<endl;
+    }
+
+    Complex operator++()
+    {
+        Complex temp;
+        temp.a=++a;
+        temp.b=++b;
+        return temp;
+    }
+
+    Complex operator++(int k)
+    {
+        Complex temp;
+        temp.a=a++;
+        temp.b=b++;
+        return temp;
+    }
+
+    Complex operator--()
+    {
+        Complex temp;
+        temp.a=--a;
+        temp.b=--b;
+        return temp;
+    }
+
+    Complex operator--(int k)
+    {
+        Complex temp;
+        temp.a=a--;
+        temp.b=b--;
+        return temp;
+    }
+
+};
+
+int main()
+{
+    Complex c1(2,4);
+    c1.showData();
+    (++c1).showData();
+    (c1++).showData();
+    c1.showData();
+    (--c1).showData();
+    (c1--).showData();
+    c1.showData();
+    return 0;
+}
+
+
+3. Write a C++ program to add two complex numbers using operator overloaded by a
+friend function.
+
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+private:
+    int a,b;
+public:
+    Complex()
+    {
+        a=0;
+        b=0;
+    }
+
+    Complex(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void setData(int r,int i)
+    {
+        a=r;
+        b=i;
+    }
+
+    void showData()
+    {
+        cout<<"real part: "<<a<<" imaginary part: "<<b<<endl;
+    }
+
+    Complex operator+(Complex x)
+    {
+        Complex temp;
+        temp.a=a+x.a;
+        temp.b=b+x.b;
+        return temp;
+    }
+
+    friend Complex operator+(Complex,Complex);
+};
+
+Complex operator+(Complex X,Complex Y)
+{
+    Complex temp;
+    temp.a=X.a+Y.a;
+    temp.b=X.b+Y.b;
+    return temp;
+}
+
+int main()
+{
+    Complex c1(2,4),c2,c3,c4;
+    c2.setData(3,6);
+    c3=operator+(c1,c2);
+    c4=c1.operator+(c2);
+    c3.showData();
+    c4.showData();
+    return 0;
+}
+
+
+4. Create a class Time which contains:
+- Hours
+- Minutes
+- Seconds
+Write a C++ program using operator overloading for the following:
+1. = = : To check whether two Times are the same or not.
+2. >> : To accept the time.
+3. << : To display the time.
+
+
+#include<iostream>
+using namespace std;
+
+class Time
+{
+private:
+    int hour,min,sec;
+public:
+    Time()
+    {
+        hour=0;
+        min=0;
+        sec=0;
+    }
+
+    Time(int h,int m,int s)
+    {
+        hour=h;
+        min=m;
+        sec=s;
+    }
+
+    Time(const Time &t)
+    {
+        hour=t.hour;
+        min=t.min;
+        sec=t.sec;
+    }
+
+    friend istream& operator>>(istream &is,Time &t);
+
+    friend ostream& operator<<(ostream &os,Time t);
+
+    friend bool operator==(Time a,Time b);
+};
+
+istream& operator>>(istream &is,Time &t)
+{
+    cout<<"Enter HOURS : ";
+    is>>t.hour;
+    cout<<endl;
+    cout<<"Enter MINUTES : ";
+    is>>t.min;
+    cout<<endl;
+    cout<<"Enter seconds : ";
+    is>>t.sec;
+    cout<<endl;
+    t.min+=t.sec/60;
+    t.sec%=60;
+    t.hour+=t.min/60;
+    t.min%=60;
+    return is;
+}
+
+ostream& operator<<(ostream &os,Time t)
+{
+    os<<"HOURS : "<<t.hour<<endl;
+    os<<"MINUTES : "<<t.min<<endl;
+    os<<"SECONDS : "<<t.sec<<endl;
+    return os;
+}
+
+bool operator==(Time a,Time b)
+{
+    int tot1=a.hour*3600+a.min*60+a.sec;
+    int tot2=b.hour*3600+b.min*60+b.sec;
+    if(tot1==tot2)
+        return true;
+    else
+        return false;
+}
+
+int main()
+{
+    Time t1,t2;
+    cout<<"Enter First Time : "<<endl<<"---------------"<<endl;
+    cin>>t1;
+    cout<<"First Time is:\n";
+    cout<<t1;
+    cout<<"\n\n";
+    cout<<"Enter Second Time : "<<endl<<"---------------"<<endl;
+    cin>>t2;
+    cout<<"Second Time is:\n";
+    cout<<t2;
+    cout<<"\n\n";
+    if(t1==t2)
+        cout<<"both time are equal"<<endl;
+    else
+        cout<<"both time are unequal"<<endl;
+    return 0;
+}
+
+
+5. Consider following class Numbers
+class Numbers
+
+{
+int x,y,z;
+public:
+// methods
+
+};
+Overload the operator unary minus (-) to negate the numbers.
+
+#include<iostream>
+using namespace std;
+
+class Numbers
+{
+private:
+    int x,y,z;
+public:
+    Numbers()
+    {
+        x=0;
+        y=0;
+        z=0;
+    }
+
+    Numbers(int a,int b,int c)
+    {
+        x=a;
+        y=b;
+        z=c;
+    }
+
+    Numbers(const Numbers &n)
+    {
+        x=n.x;
+        y=n.y;
+        z=n.z;
+    }
+
+    void setdata(int a,int b,int c)
+    {
+        x=a;
+        y=b;
+        z=c;
+    }
+
+    void display()
+    {
+        cout<<"Numbers are :\n"<<"x : "<<x<<" y : "<<y<<" z : "<<z<<endl;
+    }
+
+    Numbers operator-()
+    {
+        Numbers temp;
+        temp.x=-x;
+        temp.y=-y;
+        temp.z=-z;
+        return temp;
+    }
+
+};
+
+int main()
+{
+    Numbers n1;
+    n1.setdata(1,2,3);
+    Numbers n2 = -n1;
+    cout<<"Negative object:\n";
+    n2.display();
+    return 0;
+}
+
+
+6. Create a class CString to represent a string.
+a) Overload the + operator to concatenate two strings.
+b) == to compare 2 strings.
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class CString
+{
+private:
+    char str[50];
+public:
+    void inputString()
+    {
+        cout<<"Enter a String : ";
+        cin.getline(str,50);
+    }
+
+    void display()
+    {
+        cout<<str<<endl;
+    }
+
+    CString operator+(CString s)
+    {
+        CString cstr;
+        strcpy(cstr.str,str);
+        strcat(cstr.str,s.str);
+        return cstr;
+    }
+
+    int operator==(CString s)
+    {
+        if(!strcmp(str,s.str))
+            return 1;
+        else
+            return 0;
+    }
+
+};
+
+int main()
+{
+    CString s1,s2,s3;
+    s1.inputString();
+    s1.display();
+    s2.inputString();
+    s2.display();
+    s3=s1+s2;
+    s3.display();
+    if(s1==s2)
+        cout<<"strings are equal"<<endl;
+    else
+        cout<<"strings are not equal"<<endl;
+    return 0;
+}
+
+
+7. Define a C++ class fraction
+class fraction
+{
+long numerator;
+long denominator;
+Public:
+fraction (long n=0, long d=0);
+}
+Overload the following operators as member or friend:
+a) Unary ++ (pre and post both)
+b) Overload as friend functions: operators << and >>.
+
+
+#include<iostream>
+using namespace std;
+
+class fraction
+{
+private:
+    long numerator;
+    long denominator;
+public:
+    fraction()
+    {
+        numerator=0;
+        denominator=0;
+    }
+
+    fraction(long n,long d)
+    {
+        numerator=n;
+        denominator=d;
+    }
+
+    fraction(const fraction &f)
+    {
+        numerator=f.numerator;
+        denominator=f.denominator;
+    }
+
+    fraction operator++()
+    {
+        fraction temp;
+        temp.numerator=++numerator;
+        temp.denominator=++denominator;
+        return temp;
+    }
+
+    fraction operator++(int k)
+    {
+        fraction temp;
+        temp.numerator=numerator++;
+        temp.denominator=denominator++;
+        return temp;
+    }
+
+    friend istream& operator>>(istream&,fraction&);
+    friend ostream& operator<<(ostream&,fraction);
+};
+
+istream& operator>>(istream &in,fraction &f)
+{
+    cout<<"enter numerator:";
+    in>>f.numerator;
+    cout<<"enter denominator:";
+    in>>f.denominator;
+    return in;
+}
+
+ostream& operator<<(ostream &os,fraction f)
+{
+    os<<"numerator: "<<f.numerator<<endl;
+    os<<"denominator: "<<f.denominator<<endl;
+    return os;
+}
+
+int main()
+{
+    fraction f1;
+    cin>>f1;
+    cout<<f1;
+    fraction f2=++f1;
+    cout<<f1;
+    cout<<f2;
+    fraction f3=f2++;
+    cout<<f3;
+    cout<<f2;
+    return 0;
+}
+
+
+8. Consider a class Matrix
+Class Matrix
+{
+int a[3][3];
+Public:
+//methods;
+};
+Overload the - (Unary) should negate the numbers stored in the object.
+
+#include<iostream>
+using namespace std;
+
+class Matrix
+{
+private:
+    int a[3][3];
+public:
+    Matrix()
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                a[i][j]=0;
+        }
+    }
+
+    Matrix(const Matrix &m)
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                a[i][j]=m.a[i][j];
+        }
+    }
+
+    void input()
+    {
+        cout<<"Enter values of matrix: ";
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                cin>>a[i][j];
+        }
+    }
+
+    void display()
+    {
+        cout<<"matrix: "<<endl;
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                cout<<a[i][j]<<"\t";
+            }
+            cout<<endl;
+        }
+    }
+
+    Matrix operator-()
+    {
+        Matrix temp;
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                temp.a[i][j]=-a[i][j];
+        }
+        return temp;
+    }
+};
+
+int main()
+{
+    Matrix m1;
+    m1.input();
+    m1.display();
+    Matrix m2=-m1;
+    m2.display();
+    return 0;
+}
+
+
+9. Consider the following class mystring
+Class mystring
+{
+char str [100];
+Public:
+// methods
+};
+Overload operator “!” to reverse the case of each alphabet in the string
+(Uppercase to Lowercase and vice versa).
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class mystring
+{
+private:
+    char str[100];
+public:
+    void input(const char *s)
+    {
+        strcpy(str,s);
+    }
+
+    void get()
+    {
+        cout<<"Enter string: ";
+        cin.getline(str,100);
+    }
+
+    void display()
+    {
+        cout<<"string is: "<<str<<endl;
+    }
+
+    mystring operator!()
+    {
+        mystring s1;
+        strcpy(s1.str,str);
+        for(int i=0;i<strlen(s1.str);i++)
+        {
+            if(s1.str[i]>='A'&&s1.str[i]<='Z')
+            {
+                s1.str[i]+=32;
+            }
+            else if(s1.str[i]>='a'&&s1.str[i]<='z')
+            {
+                s1.str[i]-=32;
+            }
+        }
+        return s1;
+    }
+
+};
+
+int main()
+{
+    mystring s;
+    s.get();
+    s.display();
+    mystring S=!s;
+    S.display();
+    return 0;
+}
+
+
+10.Class Matrix
+{
+int a[3][3];
+Public:
+//methods;
+};
+Let m1 and m2 are two matrices. Find out m3=m1+m2 (use operator
+overloading).
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+class Matrix
+{
+private:
+    int a[3][3];
+public:
+    Matrix()
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                a[i][j]=0;
+        }
+    }
+
+    Matrix(const Matrix &m)
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                a[i][j]=m.a[i][j];
+        }
+    }
+
+    void input()
+    {
+        cout<<"Enter values of matrix: ";
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                cin>>a[i][j];
+        }
+    }
+
+    void display()
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                cout<<a[i][j]<<"\t";
+            }
+            cout<<endl;
+        }
+    }
+
+    Matrix operator+(Matrix &m)
+    {
+        Matrix temp;
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+                temp.a[i][j]=a[i][j]+m.a[i][j];
+        }
+        return temp;
+    }
+};
+
+int main()
+{
+    Matrix m1,m2,m3;
+    m1.input();
+    cout<<"matrix 1 is:"<<endl;
+    m1.display();
+    m2.input();
+    cout<<"matrix 2 is:"<<endl;
+    m2.display();
+    m3=m1+m2;
+    cout<<"addition of matrix is:"<<endl;
+    m3.display();
+    return 0;
+}
+
